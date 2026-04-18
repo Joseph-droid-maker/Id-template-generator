@@ -1,0 +1,362 @@
+/* ═══════════════════════════════════════════════════════
+   styles.css — Taylormade ID Card Generator
+   Design system: DM Sans + DM Mono, navy-on-light palette
+═══════════════════════════════════════════════════════ */
+
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Design tokens ───────────────────────────────────── */
+:root {
+  --navy:    #0f1f45;   /* darkest — header / footer fills    */
+  --navy2:   #1a2e5a;   /* mid navy — name band, field accents */
+  --navy3:   #2d4a8a;   /* lighter navy — hover states         */
+  --accent:  #3a6fd8;   /* interactive blue — focus rings, links */
+  --slate:   #edf1fb;   /* card body background                */
+  --slateB:  #ccd5ec;   /* borders, field fills                */
+  --field:   #dce4f5;   /* field box fill on the card          */
+  --muted:   #8a9bbf;   /* secondary text on dark bg           */
+  --sub:     #5a6a8a;   /* secondary text on light bg          */
+  --bg:      #f2f5fb;   /* page background                     */
+  --white:   #ffffff;
+  --text:    #0f1f45;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Two-column shell ────────────────────────────────── */
+.shell {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 760px) {
+  .shell { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════════
+   LEFT PANEL — Form
+══════════════════════════════════════════════════════ */
+.left {
+  background: var(--navy);
+  padding: 24px;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.left-header {
+  margin-bottom: 24px;
+}
+.left-header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+.left-header p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  font-family: var(--font-mono);
+}
+
+/* Section labels inside the dark panel */
+.section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 20px 0 10px;
+}
+
+/* Horizontal divider between sections */
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 20px 0;
+}
+
+/* Individual form field wrapper */
+.field {
+  margin-bottom: 10px;
+}
+.field label {
+  display: block;
+  font-size: 11px;
+  color: #8da0c8;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.field input,
+.field textarea {
+  width: 100%;
+  font-size: 13px;
+  padding: 8px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font-family: var(--font-body);
+  transition: border-color 0.15s, background 0.15s;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.12);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+/* 2-column and 3-column grid rows inside the form */
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 80px; gap: 8px; }
+
+/* ── Photo upload zone ──────────────────────────────── */
+.photo-upload {
+  border: 1.5px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.photo-upload:hover {
+  border-color: var(--accent);
+  background: rgba(58, 111, 216, 0.08);
+}
+.photo-upload-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* Grey square placeholder before a photo is uploaded */
+.photo-thumb-placeholder {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+/* Actual image thumbnail shown after upload */
+.photo-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.photo-text strong {
+  display: block;
+  font-size: 12px;
+  color: #c0cfed;
+  font-weight: 500;
+}
+.photo-text p {
+  font-size: 12px;
+  color: #8da0c8;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* ══════════════════════════════════════════════════════
+   RIGHT PANEL — Preview + Export
+══════════════════════════════════════════════════════ */
+.right {
+  background: var(--bg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header row: "Live Preview" + auto-updating badge */
+.right-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.right-header h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Green "Auto-updating" status pill */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #3a7d44;
+  background: #eaf5eb;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-weight: 500;
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a7d44;
+}
+
+/* ── Tab switcher ───────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--white);
+  border: 1px solid var(--slateB);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  width: fit-content;
+}
+.tab {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--sub);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-body);
+}
+.tab.active {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* ── Canvas preview container ───────────────────────── */
+.preview-area {
+  background: var(--white);
+  border: 1px solid var(--slateB);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 360px;
+}
+canvas {
+  border-radius: 12px;
+  /* Soft drop shadow gives the card depth against the white bg */
+  box-shadow: 0 8px 32px rgba(15, 31, 69, 0.18);
+  display: block;
+}
+
+/* ── Export panel ───────────────────────────────────── */
+.export-panel {
+  background: var(--white);
+  border: 1px solid var(--slateB);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+.export-panel-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sub);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.fmt-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.fmt-label {
+  font-size: 12px;
+  color: var(--sub);
+  font-weight: 500;
+}
+.fmt-group {
+  display: flex;
+  gap: 6px;
+}
+/* Individual format toggle pill */
+.fmt-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--slateB);
+  background: var(--white);
+  color: var(--sub);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  transition: all 0.15s;
+}
+.fmt-btn.active {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+
+/* Action buttons row */
+.export-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+/* Filled dark navy button */
+.btn-primary {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.btn-primary:hover { background: var(--navy3); border-color: var(--navy3); }
+/* Outlined secondary button */
+.btn-outline {
+  background: var(--white);
+  color: var(--text);
+  border-color: var(--slateB);
+}
+.btn-outline:hover { border-color: var(--navy); color: var(--navy); }
