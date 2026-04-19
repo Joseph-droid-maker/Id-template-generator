@@ -156,7 +156,7 @@ function drawFront(canvas, data, photoImg) {
   }
   ctx.fillStyle = '#ffffff';
   ctx.textAlign = 'center';
-  ctx.fillText(fullName, W / 2, bandY + 34 * s);
+  ctx.fillText(fullName, W / 2, bandY + 34 * s);``
 
   // Footer
   const footerY = H - 34 * s;
